@@ -32,6 +32,10 @@ ENV BITNAMI_APP_NAME="kafka" \
 
 EXPOSE 9092
 
+RUN uuid=$(/opt/kafka/bin/kafka-storage.sh random-uuid) &&
+    /opt/kafka/bin/kafka-storage.sh format -t $uuid -c /opt/kafka/config/kraft/server.properties &&
+    /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
+
 USER 1001
 ENTRYPOINT [ "/opt/bitnami/scripts/kafka/entrypoint.sh" ]
 CMD [ "/opt/bitnami/scripts/kafka/run.sh" ]
